@@ -1,5 +1,5 @@
-
-import React from 'react';
+import React from "react";
+import Logo from "../assets/logo.svg";
 
 const Header = () => {
   return (
@@ -12,14 +12,12 @@ const Header = () => {
 
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-              <i className="fa-solid fa-seedling text-[#0A1F44] text-xl"></i>
-            </div>
-            <span className="text-2xl font-bold">SkillSeed</span>
+          <div className="flex items-center gap-2">
+            <img src={Logo} className="w-[60px]" />
+            <span className="text-2xl font-bold uppercase">SkillSeed</span>
           </div>
 
-          <nav className="hidden md:flex items-center gap-8">
+          {/* <nav className="hidden md:flex items-center gap-8">
             <span className="flex items-center gap-2 hover:text-[#FFC107] transition-colors cursor-pointer">
               <i className="fa-solid fa-house-chimney"></i>
               <span>Home</span>
@@ -36,23 +34,23 @@ const Header = () => {
               <i className="fa-solid fa-trophy"></i>
               <span>Progress</span>
             </span>
-          </nav>
+          </nav> */}
 
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-3">
               <div className="relative">
                 <button className="w-10 h-10 rounded-full overflow-hidden border-2 border-[#FFC107]">
-                  <img 
-                    src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" 
-                    alt="User Avatar" 
+                  <img
+                    src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg"
+                    alt="User Avatar"
                     className="w-full h-full object-cover"
                   />
                 </button>
                 <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-[#4CAF50] rounded-full border-2 border-[#0A1F44]"></div>
               </div>
               <div className="hidden md:block">
-                <p className="text-sm font-medium">Emma</p>
-                <p className="text-xs text-gray-300">Quiz Explorer</p>
+                {/* <p className="text-sm font-medium">Emma</p> */}
+                <p className="text-sm font-medium text-gray-300">Quiz Explorer</p>
               </div>
             </div>
           </div>
