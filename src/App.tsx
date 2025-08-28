@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Quiz from "./pages/Quiz";
 import Results from "./pages/Results";
 import NotFound from "./pages/NotFound";
+import CareerRecommendations from "./pages/Recommendations";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
           {/* <Route path="/quiz/:ageRange" element={<Quiz />} /> */}
           <Route path="/quiz" element={<Quiz />} />
           <Route path="/results" element={<Results />} />
+          <Route path="/career-recommendations" element={<CareerRecommendations />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

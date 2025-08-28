@@ -478,7 +478,7 @@ const Quiz13to15: React.FC<Quiz13to15Props> = ({
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         .animate-fade-in {
           animation: fadeIn 0.5s ease-in;
         }

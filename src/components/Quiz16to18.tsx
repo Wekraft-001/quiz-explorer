@@ -352,7 +352,7 @@ const Quiz16to18: React.FC<Quiz16to17Props> = ({
             <span className="font-bold text-lg">{currentPhaseData.name}</span>
             <i className="fa-solid fa-graduation-cap text-2xl"></i>
           </div>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-500 max-w-2xl mx-auto">
             A comprehensive evaluation designed to identify your professional
             strengths and career pathway alignment.
           </p>

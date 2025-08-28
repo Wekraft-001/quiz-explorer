@@ -11,10 +11,10 @@ const Header = () => {
       </div>
 
       <div className="container mx-auto px-6">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-center md:justify-between">
           <div className="flex items-center gap-2">
             <img src={Logo} className="w-[60px]" />
-            <span className="text-2xl font-bold uppercase">SkillSeed</span>
+            <span className="text-3xl font-bold uppercase font-nexa">SkillSeed</span>
           </div>
 
           {/* <nav className="hidden md:flex items-center gap-8">
@@ -36,7 +36,7 @@ const Header = () => {
             </span>
           </nav> */}
 
-          <div className="flex items-center gap-4">
+          <div className="md:flex items-center gap-4 hidden">
             <div className="flex items-center gap-3">
               <div className="relative">
                 <button className="w-10 h-10 rounded-full overflow-hidden border-2 border-[#FFC107]">
@@ -50,14 +50,16 @@ const Header = () => {
               </div>
               <div className="hidden md:block">
                 {/* <p className="text-sm font-medium">Emma</p> */}
-                <p className="text-sm font-medium text-gray-300">Quiz Explorer</p>
+                <p className="text-sm font-medium text-gray-300">
+                  Quiz Explorer
+                </p>
               </div>
             </div>
           </div>
 
-          <button className="md:hidden rounded-full w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 transition-colors">
+          {/* <button className="md:hidden rounded-full w-10 h-10 flex items-center justify-center bg-white/10 hover:bg-white/20 transition-colors">
             <i className="fa-solid fa-bars text-white"></i>
-          </button>
+          </button> */}
         </div>
       </div>
     </header>

@@ -73,18 +73,18 @@ const AgeSelection: React.FC<AgeSelectionProps> = ({ onAgeSelect }) => {
           <div className="mb-8">
             <div className="inline-flex items-center gap-3 bg-white rounded-full px-6 py-3 shadow-lg mb-6">
               <i className="fa-solid fa-magic-wand-sparkles text-[#FFC107] text-2xl animate-spin"></i>
-              <span className="text-[#212121] font-semibold">
+              <span className="text-[#212121]/75 font-semibold">
                 Let's Discover Your Superpowers!
               </span>
               <i className="fa-solid fa-sparkles text-[#FF4081] text-xl"></i>
             </div>
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold text-[#212121] mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-800/90 mb-4">
             What's Your Age Range?
             <span className="text-[#1A73E8]">🎯</span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
             Choose your age group so we can create the perfect quiz adventure
             just for you!
           </p>
@@ -115,7 +115,7 @@ const AgeSelection: React.FC<AgeSelectionProps> = ({ onAgeSelect }) => {
                   <i className={`${group.icon} text-white text-3xl`}></i>
                 </div>
 
-                <h3 className="text-2xl font-bold text-[#212121] mb-3">
+                <h3 className="text-2xl font-bold text-gray-800/90 mb-3">
                   {group.title}
                 </h3>
                 <p className="text-[#1A73E8] font-semibold text-lg mb-4">

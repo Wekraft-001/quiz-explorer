@@ -490,17 +490,17 @@ const Results = () => {
 
               <div className="inline-flex items-center gap-3 bg-white rounded-full px-6 py-3 shadow-lg mb-6">
                 <i className="fa-solid fa-trophy text-[#FFC107] text-2xl animate-bounce"></i>
-                <span className="text-[#212121] font-semibold">
+                <span className="text-gray-800/90 font-semibold">
                   Quiz Complete!
                 </span>
                 <i className="fa-solid fa-star text-[#FF4081] text-xl animate-spin"></i>
               </div>
 
-              <h1 className="text-4xl md:text-5xl font-bold text-[#212121] mb-4">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-800/90 mb-4">
                 Amazing Work, {userName}!
                 <span className="text-[#1A73E8]">🎉</span>
               </h1>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              <p className="text-xl text-gray-500 max-w-2xl mx-auto leading-relaxed">
                 You've discovered some incredible superpowers! Here's what we
                 learned about you.
               </p>
@@ -512,7 +512,7 @@ const Results = () => {
                 <div className="w-24 h-24 bg-gradient-to-br from-[#9C27B0] to-[#673AB7] rounded-full mx-auto mb-6 flex items-center justify-center">
                   <i className="fa-solid fa-brain text-white text-3xl animate-pulse"></i>
                 </div>
-                <h2 className="text-3xl font-bold text-[#212121] mb-3">
+                <h2 className="text-3xl font-bold text-gray-800/90 mb-3">
                   AI Analysis
                 </h2>
                 <p className="text-[#9C27B0] font-semibold text-lg">
@@ -520,10 +520,8 @@ const Results = () => {
                 </p>
               </div>
 
-              <div className="bg-white rounded-xl p-6 shadow-sm">
-                <p className="text-gray-700 leading-relaxed text-center">
-                  {profileText}
-                </p>
+              <div className="bg-white rounded-xl p-4 md:p-6 shadow-sm">
+                <p className="text-gray-600 leading-8">{profileText}</p>
               </div>
             </div>
 
@@ -533,7 +531,7 @@ const Results = () => {
                 <div className="w-24 h-24 bg-gradient-to-br from-[#FFC107] to-[#FF9800] rounded-full mx-auto mb-6 flex items-center justify-center">
                   <i className="fa-solid fa-magic-wand-sparkles text-white text-3xl animate-pulse"></i>
                 </div>
-                <h2 className="text-3xl font-bold text-[#212121] mb-3">
+                <h2 className="text-3xl font-bold text-gray-800/90 mb-3">
                   Your Superpower Profile
                 </h2>
                 <p className="text-[#1A73E8] font-semibold text-lg">
@@ -557,10 +555,10 @@ const Results = () => {
                         className={`${superpower.icon} ${superpower.color} text-2xl`}
                       ></i>
                     </div>
-                    <h3 className="text-lg font-semibold text-[#212121] mb-2">
+                    <h3 className="text-lg font-semibold text-gray-800/90 mb-2">
                       {superpower.title}
                     </h3>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-500 text-sm">
                       {superpower.description}
                     </p>
                   </div>
@@ -636,7 +634,7 @@ const Results = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6">
               <div className="bg-gradient-to-br from-[#1A73E8] to-[#0D47A1] rounded-2xl p-8 text-white relative overflow-hidden">
                 <div className="absolute top-4 right-4 opacity-20">
                   <i className="fa-solid fa-robot text-6xl"></i>
@@ -647,20 +645,25 @@ const Results = () => {
                     <i className="fa-solid fa-magic-wand-sparkles text-white text-2xl"></i>
                   </div>
 
-                  <h3 className="text-2xl font-bold mb-3">Get More Insights</h3>
-                  <p className="text-blue-100 mb-6 text-sm leading-relaxed">
+                  <h3 className="text-2xl font-bold mb-3 text-center">
+                    Get Career Recommendations
+                  </h3>
+                  <p className="text-blue-100 mb-6 text-sm text-center leading-relaxed">
                     Explore deeper recommendations and personalized learning
                     paths!
                   </p>
 
-                  <button className="w-full bg-white text-[#1A73E8] rounded-full py-3 px-6 font-semibold hover:bg-gray-50 transition-all transform hover:scale-105 flex items-center justify-center gap-2">
+                  <button
+                    onClick={() => navigate("/career-recommendations")}
+                    className="w-full bg-white text-[#1A73E8] rounded-full py-3 px-6 font-semibold hover:bg-gray-50 transition-all transform hover:scale-105 flex items-center justify-center gap-2"
+                  >
                     <i className="fa-solid fa-sparkles"></i>
                     Explore More
                   </button>
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-[#4CAF50] to-[#2E7D32] rounded-2xl p-8 text-white relative overflow-hidden">
+              <div className="bg-gradient-to-br from-[#4CAF50] to-[#2E7D32] rounded-2xl p-8 text-white relative overflow-hidden hidden">
                 <div className="absolute top-4 right-4 opacity-20">
                   <i className="fa-solid fa-comments text-6xl"></i>
                 </div>
@@ -686,7 +689,7 @@ const Results = () => {
             </div>
 
             {/* Achievement Badge */}
-            <div className="text-center mt-12">
+            <div className="text-center mt-12 hidden">
               <div className="inline-flex items-center gap-4 bg-gradient-to-r from-[#FFC107] to-[#FF9800] text-white rounded-full px-8 py-4 shadow-lg">
                 <i className="fa-solid fa-medal text-2xl animate-bounce"></i>
                 <div>
@@ -702,15 +705,15 @@ const Results = () => {
             {/* Share Results */}
             <div className="bg-white rounded-2xl p-6 mt-8 shadow-lg">
               <div className="text-center">
-                <h3 className="text-xl font-bold text-[#212121] mb-4">
+                <h3 className="text-2xl font-bold text-gray-800/90 mb-4">
                   Share Your Results! 🌟
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-500 mb-6">
                   Let your friends and family know about your amazing
                   discoveries!
                 </p>
 
-                <div className="flex justify-center gap-4">
+                <div className="flex flex-col md:flex-row justify-center gap-4">
                   <button className="bg-[#1A73E8] text-white rounded-full px-6 py-2 text-sm hover:bg-[#1557B0] transition-all flex items-center gap-2">
                     <i className="fa-solid fa-share"></i>
                     Share Results
