@@ -585,12 +585,14 @@ const CareerRecommendations = () => {
                 SkillSeed
               </span>
             </div>
-            <button
-              onClick={() => setShowJoinModal(true)}
-              className="bg-[#fab548] text-white px-4 md:px-6 py-2 rounded-full font-medium hover:shadow-lg transform hover:scale-105 transition-all"
-            >
-              Join SkillSeed
-            </button>
+            <a href="https://parents.wekraft.co/signup" target="_blank">
+              <button
+                // onClick={() => setShowJoinModal(true)}
+                className="bg-[#fab548] text-white px-4 md:px-6 py-2 rounded-full font-medium hover:shadow-lg transform hover:scale-105 transition-all"
+              >
+                Join SkillSeed
+              </button>
+            </a>
           </div>
         </div>
       </header>
@@ -731,13 +733,15 @@ const CareerRecommendations = () => {
               </div>
 
               <div className="text-center">
-                <button
-                  onClick={() => setShowJoinModal(true)}
-                  className="bg-[#2a6b8b] text-white px-8 py-3 rounded-full font-semibold hover:shadow-xl transform hover:scale-105 transition-all text-lg shadow-sm shadow-[#fab548]"
-                >
-                  Explore This Career Path
-                  <i className="fa-solid fa-arrow-right ml-2"></i>
-                </button>
+                <a href="https://parents.wekraft.co/signup" target="_blank">
+                  <button
+                    // onClick={() => setShowJoinModal(true)}
+                    className="bg-[#2a6b8b] text-white px-8 py-3 rounded-full font-semibold hover:shadow-xl transform hover:scale-105 transition-all text-lg shadow-sm shadow-[#fab548]"
+                  >
+                    Explore This Career Path
+                    <i className="fa-solid fa-arrow-right ml-2"></i>
+                  </button>
+                </a>
               </div>
             </div>
           </div>
@@ -804,7 +808,7 @@ const CareerRecommendations = () => {
                   ))}
                 </div>
 
-                <button
+                {/* <button
                   onClick={() => setShowJoinModal(true)}
                   className={`w-full text-white py-2 rounded-xl font-medium hover:shadow-lg transition-all ${
                     index % 2 === 0
@@ -813,7 +817,7 @@ const CareerRecommendations = () => {
                   }`}
                 >
                   Start Learning
-                </button>
+                </button> */}
               </div>
             ))}
           </div>
@@ -924,13 +928,16 @@ const CareerRecommendations = () => {
             </div>
 
             <div className="space-y-4">
-              <button
-                onClick={() => setShowJoinModal(true)}
-                className="bg-white text-[#2a6b8b] px-12 py-4 rounded-full text-xl font-bold hover:shadow-2xl transform hover:scale-105 transition-all"
-              >
-                Start Your Journey Now
-                <i className="fa-solid fa-sparkles ml-2 text-[#fab548]"></i>
-              </button>
+              <a href="https://parents.wekraft.co/signup" target="_blank">
+                <button
+                  // onClick={() => setShowJoinModal(true)}
+                  className="bg-white text-[#2a6b8b] px-12 py-4 rounded-full text-xl font-bold hover:shadow-2xl transform hover:scale-105 transition-all"
+                >
+                  Start Your Journey Now
+                  <i className="fa-solid fa-sparkles ml-2 text-[#fab548]"></i>
+                </button>
+              </a>
+
               <p className="text-white/70 text-sm">
                 14-day free trial • No credit card required • Cancel anytime
               </p>
@@ -952,7 +959,7 @@ const CareerRecommendations = () => {
 
             <div className="text-center mb-6">
               <div className="w-20 flex items-center justify-center mx-auto mb-4">
-               <img src={Logo} />
+                <img src={Logo} />
               </div>
               <h3 className="text-2xl font-bold text-[#2a6b8b] mb-2">
                 Welcome to SkillSeed!
