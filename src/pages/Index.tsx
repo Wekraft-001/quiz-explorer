@@ -1,128 +1,3 @@
-// import React, { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import Header from '../components/Header';
-// import AgeSelection from '../components/AgeSelection';
-// import FeaturesPreview from '../components/FeaturesPreview';
-
-// const Index = () => {
-//   const navigate = useNavigate();
-//   const [selectedAge, setSelectedAge] = useState<string | null>(null);
-
-//   const handleAgeSelect = (age: string) => {
-//     setSelectedAge(age);
-//   };
-
-//   const handleContinue = () => {
-//     if (selectedAge) {
-//       navigate(`/quiz/${selectedAge}`);
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-[#F5F7FA]">
-//       <Header />
-//       <main>
-//         <AgeSelection
-//           selectedAge={selectedAge}
-//           onAgeSelect={handleAgeSelect}
-//           onContinue={handleContinue}
-//         />
-//         <FeaturesPreview />
-//       </main>
-//     </div>
-//   );
-// };
-
-// export default Index;
-
-// Index.tsx
-// import React from "react";
-// import { useNavigate } from "react-router-dom";
-// import axios from "axios";
-// import Header from "../components/Header";
-// import AgeSelection from "../components/AgeSelection";
-// import FeaturesPreview from "../components/FeaturesPreview";
-
-// const Index = () => {
-//   const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
-//   const navigate = useNavigate();
-
-//   const handleAgeSelect = async (age: string) => {
-//     try {
-//       // ✅ POST request instead of GET
-//       const res = await axios.post(`${apiURL}/ai/guest/quiz`, {
-//         sessionId: "anon-1234", // later this will come from auth/session
-//         ageRange: age,
-//       });
-
-//       const quizData = res.data;
-
-//       // ✅ Navigate with quizData
-//       navigate("/quiz", { state: { quizData } });
-//     } catch (error) {
-//       console.error("❌ Failed to fetch quiz:", error);
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-[#F5F7FA]">
-//       <Header />
-//       <main>
-//         <AgeSelection onAgeSelect={handleAgeSelect} />
-//         <FeaturesPreview />
-//       </main>
-//     </div>
-//   );
-// };
-
-// export default Index;
-
-// Index.tsx - Updated to pass ageRange in quiz data
-// import React from "react";
-// import { useNavigate } from "react-router-dom";
-// import axios from "axios";
-// import Header from "../components/Header";
-// import AgeSelection from "../components/AgeSelection";
-// import FeaturesPreview from "../components/FeaturesPreview";
-
-// const Index = () => {
-//   const apiURL = import.meta.env.VITE_REACT_APP_BASE_URL;
-//   const navigate = useNavigate();
-
-//   const handleAgeSelect = async (age: string) => {
-//     try {
-//       // POST request to fetch quiz data
-//       const res = await axios.post(`${apiURL}/ai/guest/quiz`, {
-//         sessionId: "anon-1234", // later this will come from auth/session
-//         ageRange: age,
-//       });
-
-//       const quizData = {
-//         ...res.data,
-//         ageRange: age // Include age range in the quiz data
-//       };
-
-//       // Navigate with quizData including ageRange
-//       navigate("/quiz", { state: { quizData } });
-//     } catch (error) {
-//       console.error("❌ Failed to fetch quiz:", error);
-//       // Handle error - maybe show a toast or error message
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen bg-[#F5F7FA]">
-//       <Header />
-//       <main>
-//         <AgeSelection onAgeSelect={handleAgeSelect} />
-//         <FeaturesPreview />
-//       </main>
-//     </div>
-//   );
-// };
-
-// export default Index;
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -175,15 +50,14 @@ const Index = () => {
     try {
       // POST request to fetch quiz data
       const res = await axios.post(`${apiURL}/ai/guest/quiz`, {
-        sessionId: "guest-123", // later this will come from auth/session
         ageRange: age,
       });
 
       const quizData = {
         ...res.data,
-        ageRange: age, // Include age range in the quiz data
+        ageRange: age,
       };
-
+      // console.log(quizData, "checking the response of the quiz");
       // Navigate with quizData including ageRange
       navigate("/quiz", { state: { quizData } });
     } catch (error) {
