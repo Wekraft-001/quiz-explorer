@@ -2,210 +2,135 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
-interface Answer {
-  questionIndex: number;
-  answer: string;
+interface AIAnalysis {
+  explanation: string;
+  skills: string;
+  activities: string;
+  encouragement: string;
 }
 
+interface Analysis {
+  ageRange: string;
+  aiAnalysis: AIAnalysis;
+  analysisDate: string;
+  scores: Record<string, number>;
+  topCareerAreas: string[];
+}
+
+interface QuizDetails {
+  id: string;
+  questions: number;
+  submittedAt: string;
+  ageRange: string;
+  createdAt: string;
+}
+
+interface Video {
+  title: string;
+  url: string;
+  description?: string;
+}
+
+// interface Book {
+//   title: string;
+//   description?: string;
+// }
+
+// interface Game {
+//   title: string;
+//   description?: string;
+// }
+
+// interface Resource {
+//   title: string;
+//   url?: string;
+//   description?: string;
+// }
+
+// interface EducationalContent {
+//   videos: Video[];
+//   books: Book[];
+//   games: Game[];
+//   resources: Resource[];
+// }
+
 interface ResultsData {
-  analysis: string;
-  quizId: string;
-  answers: Answer[];
+  message: string;
+  analysis: Analysis;
+  quizDetails: QuizDetails;
+  // educationalContent: EducationalContent;
 }
 
 const Results = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [resultsData, setResultsData] = useState<ResultsData | null>(null);
-  const [userName] = useState("Champion"); // This could come from user context
+  const [userName] = useState("Champion");
 
   useEffect(() => {
-    // Get results data from navigation state or fetch from API
     if (location.state) {
-      const { answers, quizId, ageRange } = location.state;
-
-      // If we have the analysis data already
-      if (location.state.analysis) {
-        setResultsData(location.state);
-      } else {
-        // Fetch results data using quizId (if needed)
-        fetchResultsData(quizId);
-      }
+      // The API response comes in location.state
+      setResultsData(location.state as ResultsData);
     } else {
-      // No data available, redirect back
       navigate("/");
     }
   }, [location.state, navigate]);
 
-  const fetchResultsData = async (quizId: string) => {
-    try {
-      // This would be your API call to get results
-      // const response = await axios.get(`${apiUrl}/ai/guest/quiz/results/${quizId}`);
-      // setResultsData(response.data);
-
-      // For now, if no data is available, redirect
-      navigate("/");
-    } catch (error) {
-      console.error("Failed to fetch results:", error);
-      navigate("/");
-    }
-  };
-
-  const parseAnalysisToProfile = (analysis: string) => {
-    // Extract profile section from analysis
-    const profileMatch = analysis.match(/Profile:\n(.*?)\n\nRecommendations:/s);
-    return profileMatch ? profileMatch[1].trim() : analysis;
-  };
-
-  const parseRecommendations = (analysis: string) => {
-    // Extract recommendations from analysis
-    const recMatch = analysis.match(/Recommendations:\n(.*)/s);
-    if (recMatch) {
-      return recMatch[1]
-        .split("\n")
-        .filter((line) => line.trim() && line.match(/^\d+\./))
-        .map((line) => line.replace(/^\d+\.\s*/, "").trim());
-    }
-    return [];
-  };
-
-  const generateSuperpowers = (answers: Answer[]) => {
-    const answerValues = answers.map((a) => a.answer.toLowerCase());
-    const superpowers = [];
-
-    // Analyze answers to determine superpowers
-    if (
-      answerValues.some(
-        (val) => val.includes("leadership") || val.includes("lead")
-      )
-    ) {
-      superpowers.push({
-        title: "Natural Leader",
-        description:
-          "You have amazing leadership qualities and inspire others!",
-        icon: "fa-solid fa-crown",
-        color: "text-[#FFC107]",
-      });
-    }
-
-    if (
-      answerValues.some(
-        (val) => val.includes("sports") || val.includes("athletic")
-      )
-    ) {
-      superpowers.push({
-        title: "Athletic Champion",
-        description: "You excel in sports and physical activities!",
-        icon: "fa-solid fa-medal",
+  const generateSuperpowers = (topCareerAreas: string[]) => {
+    const superpowerMap: Record<string, any> = {
+      Art: {
+        title: "Creative Artist",
+        description: "You have amazing creativity and artistic vision!",
+        icon: "fa-solid fa-palette",
         color: "text-[#FF4081]",
-      });
-    }
-
-    if (
-      answerValues.some(
-        (val) =>
-          val.includes("english") ||
-          val.includes("writing") ||
-          val.includes("communication")
-      )
-    ) {
-      superpowers.push({
-        title: "Communication Master",
-        description: "You have exceptional language and communication skills!",
-        icon: "fa-solid fa-comment",
-        color: "text-[#1A73E8]",
-      });
-    }
-
-    if (
-      answerValues.some(
-        (val) => val.includes("technology") || val.includes("tech")
-      )
-    ) {
-      superpowers.push({
+      },
+      Science: {
+        title: "Science Explorer",
+        description: "You love discovering how things work!",
+        icon: "fa-solid fa-flask",
+        color: "text-[#4CAF50]",
+      },
+      Technology: {
         title: "Tech Innovator",
         description: "You have a passion for technology and innovation!",
         icon: "fa-solid fa-laptop-code",
+        color: "text-[#1A73E8]",
+      },
+      Nature: {
+        title: "Nature Lover",
+        description: "You connect deeply with the natural world!",
+        icon: "fa-solid fa-leaf",
         color: "text-[#4CAF50]",
-      });
-    }
-
-    if (
-      answerValues.some(
-        (val) => val.includes("independent") || val.includes("solo")
-      )
-    ) {
-      superpowers.push({
-        title: "Independent Thinker",
-        description: "You work excellently on your own and think creatively!",
-        icon: "fa-solid fa-lightbulb",
+      },
+      Communication: {
+        title: "Communication Master",
+        description: "You have exceptional communication skills!",
+        icon: "fa-solid fa-comment",
         color: "text-[#9C27B0]",
-      });
-    }
-
-    if (
-      answerValues.some(
-        (val) => val.includes("difference") || val.includes("impact")
-      )
-    ) {
-      superpowers.push({
-        title: "World Changer",
-        description: "You're driven to make a positive impact on the world!",
-        icon: "fa-solid fa-globe",
+      },
+      Leadership: {
+        title: "Natural Leader",
+        description: "You inspire and guide others naturally!",
+        icon: "fa-solid fa-crown",
+        color: "text-[#FFC107]",
+      },
+      Sports: {
+        title: "Athletic Champion",
+        description: "You excel in physical activities and sports!",
+        icon: "fa-solid fa-medal",
         color: "text-[#FF5722]",
-      });
-    }
+      },
+    };
 
-    // Default superpowers if none detected
-    if (superpowers.length === 0) {
-      superpowers.push(
-        {
-          title: "Creative Explorer",
-          description: "You love exploring new ideas and thinking creatively!",
-          icon: "fa-solid fa-palette",
-          color: "text-[#FF4081]",
-        },
-        {
-          title: "Problem Solver",
-          description: "You never give up and always find clever solutions!",
-          icon: "fa-solid fa-puzzle-piece",
+    return topCareerAreas.slice(0, 3).map(
+      (area) =>
+        superpowerMap[area] || {
+          title: `${area} Expert`,
+          description: `You show great potential in ${area}!`,
+          icon: "fa-solid fa-star",
           color: "text-[#1A73E8]",
         }
-      );
-    }
-
-    return superpowers.slice(0, 3); // Return max 3 superpowers
-  };
-
-  const formatAnswerForDisplay = (answer: Answer, index: number) => {
-    const icons = [
-      "fa-solid fa-star",
-      "fa-solid fa-heart",
-      "fa-solid fa-lightbulb",
-      "fa-solid fa-rocket",
-      "fa-solid fa-trophy",
-      "fa-solid fa-magic-wand-sparkles",
-      "fa-solid fa-crown",
-      "fa-solid fa-medal",
-    ];
-
-    const colors = [
-      "text-[#FF4081]",
-      "text-[#4CAF50]",
-      "text-[#FFC107]",
-      "text-[#9C27B0]",
-      "text-[#FF5722]",
-      "text-[#1A73E8]",
-      "text-[#795548]",
-      "text-[#607D8B]",
-    ];
-
-    return {
-      question: `Question ${answer.questionIndex + 1}`,
-      answer: answer.answer,
-      icon: icons[index % icons.length],
-      color: colors[index % colors.length],
-    };
+    );
   };
 
   if (!resultsData) {
@@ -219,9 +144,8 @@ const Results = () => {
     );
   }
 
-  const profileText = parseAnalysisToProfile(resultsData.analysis);
-  const recommendations = parseRecommendations(resultsData.analysis);
-  const superpowers = generateSuperpowers(resultsData.answers);
+  const { analysis } = resultsData;
+  const superpowers = generateSuperpowers(analysis.topCareerAreas);
 
   return (
     <div className="min-h-screen bg-[#F5F7FA]">
@@ -252,7 +176,7 @@ const Results = () => {
               </p>
             </div>
 
-            {/* AI Analysis */}
+            {/* AI Analysis - Explanation */}
             <div className="bg-gradient-to-br from-white to-purple-50 rounded-2xl p-8 mb-8 shadow-lg">
               <div className="text-center mb-6">
                 <div className="w-24 h-24 bg-gradient-to-br from-[#9C27B0] to-[#673AB7] rounded-full mx-auto mb-6 flex items-center justify-center">
@@ -267,7 +191,9 @@ const Results = () => {
               </div>
 
               <div className="bg-white rounded-xl p-4 md:p-6 shadow-sm">
-                <p className="text-gray-600 leading-8">{profileText}</p>
+                <p className="text-gray-600 leading-8">
+                  {analysis.aiAnalysis.explanation}
+                </p>
               </div>
             </div>
 
@@ -292,10 +218,7 @@ const Results = () => {
                     className="bg-white rounded-xl p-6 text-center shadow-sm"
                   >
                     <div
-                      className={`w-16 h-16 bg-current/20 rounded-full flex items-center justify-center mx-auto mb-4 ${superpower.color.replace(
-                        "text-",
-                        "text-"
-                      )}`}
+                      className={`w-16 h-16 bg-current/20 rounded-full flex items-center justify-center mx-auto mb-4 ${superpower.color}`}
                     >
                       <i
                         className={`${superpower.icon} ${superpower.color} text-2xl`}
@@ -312,72 +235,121 @@ const Results = () => {
               </div>
             </div>
 
-            {/* AI Recommendations */}
-            {recommendations.length > 0 && (
-              <div className="bg-gradient-to-br from-white to-green-50 rounded-2xl p-8 mb-8 shadow-lg">
-                <div className="text-center mb-6">
-                  <div className="w-20 h-20 bg-gradient-to-br from-[#4CAF50] to-[#2E7D32] rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <i className="fa-solid fa-lightbulb text-white text-2xl"></i>
-                  </div>
-                  <h2 className="text-2xl font-bold text-[#212121] mb-2">
-                    AI Recommendations
-                  </h2>
-                  <p className="text-gray-600">
-                    Personalized suggestions based on your responses
-                  </p>
+            {/* Skills to Develop */}
+            <div className="bg-gradient-to-br from-white to-green-50 rounded-2xl p-8 mb-8 shadow-lg">
+              <div className="text-center mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-[#4CAF50] to-[#2E7D32] rounded-full mx-auto mb-4 flex items-center justify-center">
+                  <i className="fa-solid fa-lightbulb text-white text-2xl"></i>
                 </div>
-
-                <div className="space-y-4">
-                  {recommendations.map((rec, index) => (
-                    <div
-                      key={index}
-                      className="bg-white rounded-xl p-4 shadow-sm flex items-start gap-4"
-                    >
-                      <div className="w-8 h-8 bg-gradient-to-r from-[#4CAF50] to-[#2E7D32] rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-white font-bold text-sm">
-                          {index + 1}
-                        </span>
-                      </div>
-                      <p className="text-gray-700 leading-relaxed">{rec}</p>
-                    </div>
-                  ))}
-                </div>
+                <h2 className="text-2xl font-bold text-[#212121] mb-2">
+                  Skills to Develop
+                </h2>
+                <p className="text-gray-600">
+                  Build these skills to grow your talents
+                </p>
               </div>
-            )}
 
-            {/* Response Summary */}
-            <div className="bg-white rounded-2xl p-8 mb-8 shadow-lg">
-              <h2 className="text-2xl font-bold text-[#212121] mb-6 flex items-center gap-3">
-                <i className="fa-solid fa-list-check text-[#1A73E8]"></i>
-                Your Quiz Responses
-              </h2>
-
-              <div className="space-y-4">
-                {resultsData.answers.map((answer, index) => {
-                  const displayData = formatAnswerForDisplay(answer, index);
-                  return (
-                    <div key={index} className="bg-[#F5F7FA] rounded-xl p-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-[#212121] font-medium">
-                          {displayData.question}
-                        </span>
-                        <span className="text-[#1A73E8] text-sm">
-                          Response {index + 1}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <i
-                          className={`${displayData.icon} ${displayData.color}`}
-                        ></i>
-                        <span className="text-gray-700">
-                          {displayData.answer}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
+              <div className="bg-white rounded-xl p-6 shadow-sm">
+                <p className="text-gray-700 leading-relaxed">
+                  {analysis.aiAnalysis.skills}
+                </p>
               </div>
             </div>
+
+            {/* Recommended Activities */}
+            <div className="bg-gradient-to-br from-white to-orange-50 rounded-2xl p-8 mb-8 shadow-lg">
+              <div className="text-center mb-6">
+                <div className="w-20 h-20 bg-gradient-to-br from-[#FF9800] to-[#F57C00] rounded-full mx-auto mb-4 flex items-center justify-center">
+                  <i className="fa-solid fa-rocket text-white text-2xl"></i>
+                </div>
+                <h2 className="text-2xl font-bold text-[#212121] mb-2">
+                  Fun Activities
+                </h2>
+                <p className="text-gray-600">
+                  Try these activities to explore your interests
+                </p>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 shadow-sm">
+                <p className="text-gray-700 leading-relaxed">
+                  {analysis.aiAnalysis.activities}
+                </p>
+              </div>
+            </div>
+
+            {/* Encouragement */}
+            <div className="bg-gradient-to-br from-[#1A73E8] to-[#0D47A1] rounded-2xl p-8 mb-8 shadow-lg text-white">
+              <div className="text-center">
+                <i className="fa-solid fa-heart text-5xl mb-4 animate-pulse"></i>
+                <h2 className="text-2xl font-bold mb-4">Keep Being Amazing!</h2>
+                <p className="text-blue-100 leading-relaxed">
+                  {analysis.aiAnalysis.encouragement}
+                </p>
+              </div>
+            </div>
+
+            {/* Career Interest Scores */}
+            <div className="bg-white rounded-2xl p-8 mb-8 shadow-lg">
+              <h2 className="text-2xl font-bold text-[#212121] mb-6 flex items-center gap-3">
+                <i className="fa-solid fa-chart-bar text-[#4CAF50]"></i>
+                Your Interest Areas
+              </h2>
+              <div className="space-y-4">
+                {Object.entries(analysis.scores).map(([area, score]) => (
+                  <div key={area}>
+                    <div className="flex justify-between mb-2">
+                      <span className="font-medium text-gray-700">{area}</span>
+                      <span className="text-[#1A73E8] font-semibold">
+                        {score}%
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-3">
+                      <div
+                        className="bg-gradient-to-r from-[#1A73E8] to-[#4CAF50] h-3 rounded-full transition-all duration-500"
+                        style={{ width: `${score}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Educational Videos */}
+            {/* {educationalContent?.videos &&
+              educationalContent.videos.length > 0 && (
+                <div className="bg-white rounded-2xl p-8 mb-8 shadow-lg">
+                  <h2 className="text-2xl font-bold text-[#212121] mb-6 flex items-center gap-3">
+                    <i className="fa-solid fa-video text-[#FF4081]"></i>
+                    Recommended Videos
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {educationalContent.videos.map((video, index) => (
+                      <div
+                        key={index}
+                        className="bg-[#F5F7FA] rounded-xl p-4 hover:shadow-md transition-shadow"
+                      >
+                        <h3 className="font-semibold text-gray-800 mb-2">
+                          {video.title}
+                        </h3>
+                        {video.description && (
+                          <p className="text-gray-600 text-sm mb-2">
+                            {video.description}
+                          </p>
+                        )}
+                        <a
+                          href={video.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#1A73E8] text-sm hover:underline inline-flex items-center gap-1"
+                        >
+                          Watch Video{" "}
+                          <i className="fa-solid fa-arrow-right text-xs"></i>
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )} */}
 
             {/* Action Buttons */}
             <div className="grid grid-cols-1 gap-6">
@@ -408,44 +380,6 @@ const Results = () => {
                   </button>
                 </div>
               </div>
-
-              <div className="bg-gradient-to-br from-[#4CAF50] to-[#2E7D32] rounded-2xl p-8 text-white relative overflow-hidden hidden">
-                <div className="absolute top-4 right-4 opacity-20">
-                  <i className="fa-solid fa-comments text-6xl"></i>
-                </div>
-
-                <div className="relative z-10">
-                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-6">
-                    <i className="fa-solid fa-user-astronaut text-white text-2xl"></i>
-                  </div>
-
-                  <h3 className="text-2xl font-bold mb-3">
-                    Chat with AI Advisor
-                  </h3>
-                  <p className="text-green-100 mb-6 text-sm leading-relaxed">
-                    Ask questions about your results or get personalized advice!
-                  </p>
-
-                  <button className="w-full bg-white text-[#4CAF50] rounded-full py-3 px-6 font-semibold hover:bg-gray-50 transition-all transform hover:scale-105 flex items-center justify-center gap-2">
-                    <i className="fa-solid fa-comment-dots"></i>
-                    Start Chatting
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Achievement Badge */}
-            <div className="text-center mt-12 hidden">
-              <div className="inline-flex items-center gap-4 bg-gradient-to-r from-[#FFC107] to-[#FF9800] text-white rounded-full px-8 py-4 shadow-lg">
-                <i className="fa-solid fa-medal text-2xl animate-bounce"></i>
-                <div>
-                  <p className="font-bold text-lg">Achievement Unlocked!</p>
-                  <p className="text-sm opacity-90">
-                    Quiz Explorer Badge Earned
-                  </p>
-                </div>
-                <i className="fa-solid fa-star text-2xl animate-spin"></i>
-              </div>
             </div>
 
             {/* Share Results */}
@@ -460,17 +394,17 @@ const Results = () => {
                 </p>
 
                 <div className="flex flex-col md:flex-row justify-center gap-4">
-                  <button className="bg-[#1A73E8] text-white rounded-full px-6 py-2 text-sm hover:bg-[#1557B0] transition-all flex items-center gap-2">
+                  <button className="bg-[#1A73E8] text-white rounded-full px-6 py-2 text-sm hover:bg-[#1557B0] transition-all flex items-center justify-center gap-2">
                     <i className="fa-solid fa-share"></i>
                     Share Results
                   </button>
-                  <button className="bg-[#4CAF50] text-white rounded-full px-6 py-2 text-sm hover:bg-[#388E3C] transition-all flex items-center gap-2">
+                  <button className="bg-[#4CAF50] text-white rounded-full px-6 py-2 text-sm hover:bg-[#388E3C] transition-all flex items-center justify-center gap-2">
                     <i className="fa-solid fa-download"></i>
                     Save Certificate
                   </button>
                   <button
                     onClick={() => navigate("/")}
-                    className="bg-[#FF4081] text-white rounded-full px-6 py-2 text-sm hover:bg-[#E91E63] transition-all flex items-center gap-2"
+                    className="bg-[#FF4081] text-white rounded-full px-6 py-2 text-sm hover:bg-[#E91E63] transition-all flex items-center justify-center gap-2"
                   >
                     <i className="fa-solid fa-redo"></i>
                     Take Again

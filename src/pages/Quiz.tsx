@@ -7,12 +7,45 @@ import Quiz13to15 from "../components/Quiz13to15";
 import Quiz16to18 from "../components/Quiz16to18";
 import axios from "axios";
 
+const SubmitLoader = () => (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white rounded-2xl p-8 flex flex-col items-center shadow-2xl">
+      {/* Animated spinning icon */}
+      <div className="relative mb-4">
+        <div className="w-16 h-16 border-4 border-green-200 rounded-full animate-spin border-t-green-500"></div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-2xl animate-pulse">
+            <i className="fa-solid fa-check text-green-500 text-2xl"></i>
+          </span>
+        </div>
+      </div>
+
+      {/* Loading text with animated dots */}
+      <div className="text-gray-700 font-medium text-lg mb-2">
+        Analyzing your answers
+      </div>
+      <div className="flex space-x-1">
+        <div className="w-2 h-2 bg-green-500 rounded-full animate-bounce"></div>
+        <div
+          className="w-2 h-2 bg-green-500 rounded-full animate-bounce"
+          style={{ animationDelay: "0.1s" }}
+        ></div>
+        <div
+          className="w-2 h-2 bg-green-500 rounded-full animate-bounce"
+          style={{ animationDelay: "0.2s" }}
+        ></div>
+      </div>
+    </div>
+  </div>
+);
+
 const Quiz = () => {
   const apiUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
   const location = useLocation();
   const navigate = useNavigate();
   const { quizData } = location.state || {};
   const [answers, setAnswers] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!quizData) {
     return (
@@ -32,7 +65,7 @@ const Quiz = () => {
     );
   }
 
-  const { quizId, quiz, ageRange } = quizData;
+  const { quizId, sessionId, quiz, ageRange } = quizData;
 
   const handleAnswer = (questionIndex: number, answer: string) => {
     setAnswers((prev) => {
@@ -42,18 +75,21 @@ const Quiz = () => {
   };
 
   const handleSubmit = async () => {
+    setIsSubmitting(true);
+
     try {
       const response = await axios.post(`${apiUrl}/ai/guest/quiz/submit`, {
         quizId,
+        sessionId,
         answers,
       });
-
+      console.log(response.data);
       // Pass the complete results data to the results page
       navigate("/results", {
         state: {
           analysis: response.data.analysis,
           answers: response.data.answers,
-          quizId: response.data.quizId,
+          quizId: response.data.quizDetails.id,
           ageRange,
         },
       });
@@ -89,6 +125,7 @@ const Quiz = () => {
     <div className="min-h-screen bg-[#F5F7FA]">
       <Header />
       <main>{renderQuiz()}</main>
+      {isSubmitting && <SubmitLoader />}
     </div>
   );
 };

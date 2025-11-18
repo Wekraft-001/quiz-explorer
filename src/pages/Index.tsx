@@ -50,6 +50,7 @@ const Index = () => {
     try {
       // POST request to fetch quiz data
       const res = await axios.post(`${apiURL}/ai/guest/quiz`, {
+        sessionId:"guest01",
         ageRange: age,
       });
 
