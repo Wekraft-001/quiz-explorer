@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 interface Quiz9to12Props {
   quiz: any;
-  onAnswer: (questionIndex: number, answer: string) => void;
+  onAnswer: (answerIndex: number) => void;
   onSubmit: () => void;
-  answers: any[];
+  answers: number[];
 }
 
 const Quiz9to12: React.FC<Quiz9to12Props> = ({
@@ -14,12 +14,11 @@ const Quiz9to12: React.FC<Quiz9to12Props> = ({
   answers,
 }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const questions = quiz.questions;
 
-  // Fix the loading condition
   if (!quiz || !questions || questions.length === 0) {
     return <div>Loading quiz...</div>;
   }
@@ -28,33 +27,26 @@ const Quiz9to12: React.FC<Quiz9to12Props> = ({
   const totalQuestions = questions.length;
   const currentQuestionNumber = currentQuestion + 1;
 
-  const handleAnswerClick = (answer: string) => {
+  const handleAnswerClick = (index: number) => {
     if (isTransitioning) return;
-    setSelectedAnswer(answer);
+    setSelectedIndex(index);
   };
 
   const handleNext = async () => {
-    if (!selectedAnswer || isTransitioning) return;
+    if (selectedIndex === null || isTransitioning) return;
 
     setIsTransitioning(true);
 
-    // Store the current question index for answer submission
-    const questionIndex = currentQuestion;
+    // Pass the numeric index — backend expects number[]
+    onAnswer(selectedIndex);
 
-    // Submit the answer
-    onAnswer(questionIndex, selectedAnswer);
-
-    // Wait a moment for the answer to be processed
     await new Promise((resolve) => setTimeout(resolve, 300));
 
-    // Clear selected answer for next question
-    setSelectedAnswer(null);
+    setSelectedIndex(null);
 
-    // Move to next question or submit
     if (currentQuestion < totalQuestions - 1) {
       setCurrentQuestion((prev) => prev + 1);
     } else {
-      // Quiz completed
       onSubmit();
     }
 
@@ -114,7 +106,10 @@ const Quiz9to12: React.FC<Quiz9to12Props> = ({
             </div>
           </div>
         </div>
-
+        <div className="text-center">
+          Choose your responses carefully and truthfully, the more diverse your
+          response, the better profiling you get
+        </div>
         {/* Progress */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-2">
@@ -122,16 +117,14 @@ const Quiz9to12: React.FC<Quiz9to12Props> = ({
               Question {currentQuestionNumber} of {totalQuestions}
             </span>
             <span className="text-sm text-gray-500">
-              {Math.floor((currentQuestionNumber / totalQuestions) * 100)}%
+              {/* {Math.floor((currentQuestionNumber / totalQuestions) * 100)}% */}
             </span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
             <div
               className="bg-gradient-to-r from-[#1A73E8] to-[#4CAF50] h-2 rounded-full transition-all duration-700 ease-out"
               style={{
-                width: `${Math.floor(
-                  (currentQuestionNumber / totalQuestions) * 100
-                )}%`,
+                width: `${Math.floor((currentQuestionNumber / totalQuestions) * 100)}%`,
               }}
             ></div>
           </div>
@@ -157,7 +150,7 @@ const Quiz9to12: React.FC<Quiz9to12Props> = ({
             </p>
           </div>
 
-          {/* Interactive Options */}
+          {/* Options */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {(
               currentQuestionData?.answers ||
@@ -166,12 +159,12 @@ const Quiz9to12: React.FC<Quiz9to12Props> = ({
             ).map((answer: string, index: number) => (
               <button
                 key={`${currentQuestion}-${index}`}
-                onClick={() => handleAnswerClick(answer)}
+                onClick={() => handleAnswerClick(index)}
                 disabled={isTransitioning}
                 className={`bg-gradient-to-r ${getGradientForOption(
-                  index
+                  index,
                 )} text-white rounded-2xl p-6 hover:scale-105 hover:rotate-1 transform transition-all duration-300 shadow-lg hover:shadow-2xl group relative overflow-hidden ${
-                  selectedAnswer === answer
+                  selectedIndex === index
                     ? "ring-4 ring-yellow-400 scale-105"
                     : ""
                 } ${isTransitioning ? "opacity-50 cursor-not-allowed" : ""}`}
@@ -185,7 +178,7 @@ const Quiz9to12: React.FC<Quiz9to12Props> = ({
                     {answer}
                   </span>
                 </div>
-                {selectedAnswer === answer && (
+                {selectedIndex === index && (
                   <div className="absolute top-2 right-2">
                     <i className="fa-solid fa-check-circle text-yellow-400 text-2xl"></i>
                   </div>
@@ -198,9 +191,9 @@ const Quiz9to12: React.FC<Quiz9to12Props> = ({
           <div className="text-center mt-8">
             <button
               onClick={handleNext}
-              disabled={!selectedAnswer || isTransitioning}
+              disabled={selectedIndex === null || isTransitioning}
               className={`bg-gradient-to-r from-[#1A73E8] to-[#4CAF50] text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all ${
-                !selectedAnswer || isTransitioning
+                selectedIndex === null || isTransitioning
                   ? "opacity-50 cursor-not-allowed"
                   : ""
               }`}
@@ -209,23 +202,23 @@ const Quiz9to12: React.FC<Quiz9to12Props> = ({
               {isTransitioning
                 ? "Processing..."
                 : currentQuestionNumber === totalQuestions
-                ? "Complete Quiz"
-                : "Next Question"}
+                  ? "Complete Quiz"
+                  : "Next Question"}
             </button>
           </div>
         </div>
 
         {/* Progress Dots */}
         <div className="flex justify-center gap-3 overflow-x-auto pb-2">
-          {questions.map((_, index) => (
+          {questions.map((_: any, index: number) => (
             <div
               key={index}
               className={`transition-all duration-500 rounded-full flex-shrink-0 ${
                 index < currentQuestion
-                  ? "w-3 h-3 bg-[#4CAF50]" // Completed questions
+                  ? "w-3 h-3 bg-[#4CAF50]"
                   : index === currentQuestion
-                  ? "w-6 h-3 bg-[#1A73E8] animate-pulse" // Current question
-                  : "w-3 h-3 bg-gray-300" // Upcoming questions
+                    ? "w-6 h-3 bg-[#1A73E8] animate-pulse"
+                    : "w-3 h-3 bg-gray-300"
               }`}
               title={`Question ${index + 1}`}
             ></div>

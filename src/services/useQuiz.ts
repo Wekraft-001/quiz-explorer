@@ -1,31 +1,18 @@
 import { useState } from "react";
-import axios from "axios";
 
 export function useQuiz(
   quizData: any,
-  sessionId: string,
-  onComplete: (answers: any[]) => void
+  onComplete: (answers: number[]) => void,
 ) {
-  const apiUrl = import.meta.env.VITE_REACT_APP_BASE_URL;
+  const questions = quizData?.quiz?.questions ?? [];
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<any[]>([]);
+  const [answers, setAnswers] = useState<number[]>([]);
 
-  const handleAnswer = async (answer: any) => {
-    const question = quizData.questions[currentQuestion];
-    const newAnswers = [...answers, { questionId: question.id, answer }];
+  const handleAnswer = (answerIndex: number) => {
+    const newAnswers = [...answers, answerIndex];
     setAnswers(newAnswers);
 
-    try {
-      await axios.post(`${apiUrl}/ai/guest/quiz/submit`, {
-        sessionId,
-        questionId: question.id,
-        answer,
-      });
-    } catch (err) {
-      console.error("❌ Failed to submit answer:", err);
-    }
-
-    if (currentQuestion < quizData.questions.length - 1) {
+    if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       onComplete(newAnswers);
@@ -36,7 +23,7 @@ export function useQuiz(
     currentQuestion,
     answers,
     handleAnswer,
-    totalQuestions: quizData.questions.length,
-    question: quizData.questions[currentQuestion],
+    totalQuestions: questions.length,
+    question: questions[currentQuestion],
   };
 }

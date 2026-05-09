@@ -4,6 +4,7 @@ import axios from "axios";
 import Header from "../components/Header";
 import AgeSelection from "../components/AgeSelection";
 import FeaturesPreview from "../components/FeaturesPreview";
+import { fetchGuestQuiz } from "@/services/quizService";
 
 // Cute Loader Component
 const CuteLoader = () => (
@@ -45,27 +46,14 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleAgeSelect = async (age: string) => {
-    setIsLoading(true); // Show loader
-
+    setIsLoading(true);
     try {
-      // POST request to fetch quiz data
-      const res = await axios.post(`${apiURL}/ai/guest/quiz`, {
-        sessionId:"guest01",
-        ageRange: age,
-      });
-
-      const quizData = {
-        ...res.data,
-        ageRange: age,
-      };
-      // console.log(quizData, "checking the response of the quiz");
-      // Navigate with quizData including ageRange
-      navigate("/quiz", { state: { quizData } });
+      const data = await fetchGuestQuiz("guest01", age);
+      navigate("/quiz", { state: { quizData: data, ageRange: age } });
     } catch (error) {
-      console.error("❌ Failed to fetch quiz:", error);
-      // Handle error - maybe show a toast or error message
+      console.error("Failed to fetch quiz:", error);
     } finally {
-      setIsLoading(false); // Hide loader
+      setIsLoading(false);
     }
   };
 
